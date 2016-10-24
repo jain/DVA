@@ -23,22 +23,22 @@ header = ''
 txt = ''
 for row in reader:
     # Save header row.
-    print row
     if rownum == 0:
         header = row
     else:
-        for col in row:
-            if col == 9: #or col == 10:
+        for i, col in enumerate(row):
+            print i
+            if i == 9: #or col == 10:
                 txt += col
     rownum += 1
 print txt
 blobs = tb(txt)
-for i, blob in enumerate(blobs):
+'''for i, blob in enumerate(blobs):
     print("Top words in document {}".format(i + 1))
     scores = {word: tfidf(word, blob, blobs) for word in blob.words}
     sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     for word, score in sorted_words[:3]:
-        print("\tWord: {}, TF-IDF: {}".format(word, round(score, 5)))
+        print("\tWord: {}, TF-IDF: {}".format(word, round(score, 5)))'''
 
 '''for i, v in enumerate(header): #9, 10
     print i, v
