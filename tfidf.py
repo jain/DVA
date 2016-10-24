@@ -23,15 +23,15 @@ header = ''
 txt = ''
 for row in reader:
     # Save header row.
+    print row
     if rownum == 0:
         header = row
-        break
     else:
-        colnum = 0
         for col in row:
-            if col == 9 or col == 10:
+            if col == 9: #or col == 10:
                 txt += col
     rownum += 1
+print txt
 blobs = tb(txt)
 for i, blob in enumerate(blobs):
     print("Top words in document {}".format(i + 1))
