@@ -16,29 +16,35 @@ def idf(word, bloblist):
 def tfidf(word, blob, bloblist):
     return tf(word, blob) * idf(word, bloblist)
 
-f = open('gatech-aug2016.csv', 'r')
-reader = csv.reader(f)
-rownum = 0
-header = ''
-txt = ''
-for row in reader:
-    # Save header row.
-    if rownum == 0:
-        header = row
-    else:
-        for i, col in enumerate(row):
-            print i
-            if i == 9: #or col == 10:
-                txt += col
-    rownum += 1
-print txt
-blobs = tb(txt)
-'''for i, blob in enumerate(blobs):
+def getBlob(fname):
+    #f = open('gatech-aug2016.csv', 'r')
+    f = open(fname, 'r')
+    reader = csv.reader(f)
+    rownum = 0
+    header = ''
+    txt = ''
+    for row in reader:
+        # Save header row.
+        if rownum == 0:
+            header = row
+        else:
+            for i, col in enumerate(row):
+                if i == 9:
+                    txt += col
+        rownum += 1
+    print txt
+    blob = tb(txt)
+    f.close()
+    return blob
+
+blobs = [getBlob('gatech-aug2016.csv'), getBlob('joker-aug2016.csv')]
+
+for i, blob in enumerate(blobs):
     print("Top words in document {}".format(i + 1))
     scores = {word: tfidf(word, blob, blobs) for word in blob.words}
     sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     for word, score in sorted_words[:3]:
-        print("\tWord: {}, TF-IDF: {}".format(word, round(score, 5)))'''
+        print("\tWord: {}, TF-IDF: {}".format(word, round(score, 5)))
 
 '''for i, v in enumerate(header): #9, 10
     print i, v
