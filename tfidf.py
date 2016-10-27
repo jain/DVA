@@ -1,6 +1,7 @@
 import csv
 import math
 from textblob import TextBlob as tb
+import sys  
 
 # http://stevenloria.com/finding-important-words-in-a-document-using-tf-idf/
 
@@ -36,6 +37,10 @@ def getBlob(fname):
     blob = tb(txt)
     f.close()
     return blob
+
+# http://stackoverflow.com/questions/21393758/unicodedecodeerror-ascii-codec-cant-decode-byte-0xe5-in-position-0-ordinal
+reload(sys)  
+sys.setdefaultencoding('utf8')
 
 blobs = [getBlob('gatech-aug2016.csv'), getBlob('joker-aug2016.csv')]
 
