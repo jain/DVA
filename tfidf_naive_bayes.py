@@ -1,6 +1,10 @@
 # SELECT * FROM (SELECT ROW_NUMBER() OVER(), created_utc,subreddit,title
 # FROM [fh-bigquery:reddit_posts.2016_08]
 # WHERE subreddit = 'gaming') WHERE f0_ >= 20001 AND f0_ <= 30000;
+
+# DIY.csv, AskReddit.csv, gadgets.csv, movies.csv, news.csv, space.csv,
+# television.csv, todayilearned.csv
+
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -8,6 +12,8 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
 from sklearn import cross_validation
+from sklearn.externals import joblib
+from sklearn import svm
 
 # Loads required data
 def load_data(filename):
@@ -45,6 +51,10 @@ if __name__ == "__main__":
     'Data/Subreddits/music.csv',
     'Data/Subreddits/history.csv',
     'Data/Subreddits/askscience.csv',
+    'Data/Subreddits/Fitness.csv',
+    'Data/Subreddits/personalfinance.csv',
+    'Data/Subreddits/relationships.csv',
+    'Data/Subreddits/technology.csv',
     ]
     for i in data_file_list:
         print(i)
@@ -53,7 +63,8 @@ if __name__ == "__main__":
         y_list.append(sub)
     X = pd.concat(X_list)
     y = pd.concat(y_list)
-    text_clf = create_nb_classifier(X,y)
+    text_clf = create_svm_classifier(X,y)
+    joblib.dump(text_clf,"svm_classifier.pkl")
     scores = cross_validation.cross_val_score(text_clf,X,y,cv = 5)
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
