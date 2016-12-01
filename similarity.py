@@ -1,6 +1,7 @@
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+from sklearn.externals import joblib
 import pandas as pd
 
 # Loads required data
@@ -26,6 +27,17 @@ if __name__ == "__main__":
     'Data/Subreddits/relationships.csv',
     'Data/Subreddits/technology.csv',
     ]
+    (text,sub) = load_data('Data/Subreddits/technology.csv')
+    count_vect = CountVectorizer()
+    X_train_counts = count_vect.fit_transform(text)
+    tfidf_transformer = TfidfTransformer()
+    X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+    joblib.dump(count_vect,"technology_counts.pkl")
+    joblib.dump(tfidf_transformer,"technology_tfidf.pkl")
+    joblib.dump(X_train_tfidf,"technology_transformed_data.pkl")
+    joblib.dump(text,"technology_data.pkl")
+
+    '''
     for i in data_file_list:
         (text,sub) = load_data(i)
         X_list.append(text)
@@ -45,3 +57,4 @@ if __name__ == "__main__":
     print(X.iloc[related_docs_indices[1]])
     print(X.iloc[related_docs_indices[2]])
     print(X.iloc[related_docs_indices[3]])
+    '''
