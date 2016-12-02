@@ -12,30 +12,33 @@ def load_data(filename):
 if __name__ == "__main__":
     X_list = []
     y_list = []
-    data_file_list = [
-    'Data/Subreddits/books.csv',
-    'Data/Subreddits/food.csv',
-    'Data/Subreddits/gaming.csv',
-    'Data/Subreddits/sports.csv',
-    'Data/Subreddits/worldnews.csv',
-    'Data/Subreddits/art.csv',
-    'Data/Subreddits/music.csv',
-    'Data/Subreddits/history.csv',
-    'Data/Subreddits/askscience.csv',
-    'Data/Subreddits/Fitness.csv',
-    'Data/Subreddits/personalfinance.csv',
-    'Data/Subreddits/relationships.csv',
-    'Data/Subreddits/technology.csv',
+    subreddit_list = [
+    'books',
+    'food',
+    'gaming',
+    'sports',
+    'worldnews',
+    'history',
+    'askscience',
+    'fitness',
+    'personalfinance',
+    'relationships',
+    'technology',
+    'Art',
+    'movies',
+    'Music',
+    'space',
+    'travel'
     ]
-    (text,sub) = load_data('Data/Subreddits/technology.csv')
-    count_vect = CountVectorizer()
-    X_train_counts = count_vect.fit_transform(text)
-    tfidf_transformer = TfidfTransformer()
-    X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
-    joblib.dump(count_vect,"technology_counts.pkl")
-    joblib.dump(tfidf_transformer,"technology_tfidf.pkl")
-    joblib.dump(X_train_tfidf,"technology_transformed_data.pkl")
-    joblib.dump(text,"technology_data.pkl")
+    for subreddit in subreddit_list:
+        (text,sub) = load_data('Data/' + subreddit + ".csv")
+        count_vect = CountVectorizer()
+        X_train_counts = count_vect.fit_transform(text)
+        tfidf_transformer = TfidfTransformer()
+        X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+        joblib.dump(count_vect, subreddit + "_counts.pkl")
+        joblib.dump(tfidf_transformer, subreddit + "_tfidf.pkl")
+        joblib.dump(X_train_tfidf, subreddit + "_transformed_data.pkl")
 
     '''
     for i in data_file_list:
@@ -58,3 +61,4 @@ if __name__ == "__main__":
     print(X.iloc[related_docs_indices[2]])
     print(X.iloc[related_docs_indices[3]])
     '''
+
