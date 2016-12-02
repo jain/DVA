@@ -70,7 +70,11 @@ if __name__ == "__main__":
     print (time.time() - start)
     joblib.dump(text_clf,"svm_classifier.pkl")
     print (time.time() - start)
-    #scores = cross_validation.cross_val_score(text_clf,X,y,cv = 5)
-    #print (time.time() - start)
-    #print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    test_acc = Pipeline([('vect',CountVectorizer()),
+        ('tfidf',TfidfTransformer()),
+        ('clf', SGDClassifier(loss='log', penalty='l2',alpha=1e-4, n_iter=5, random_state=42, n_jobs=-1)),
+        ])
+    scores = cross_validation.cross_val_score(test_acc,X,y,cv = 5)
+    print (time.time() - start)
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
