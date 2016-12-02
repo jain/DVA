@@ -14,6 +14,7 @@ from sklearn.pipeline import Pipeline
 from sklearn import cross_validation
 from sklearn.externals import joblib
 from sklearn import svm
+import time
 
 # Loads required data
 def load_data(filename):
@@ -33,7 +34,7 @@ def create_nb_classifier(X,y):
 def create_svm_classifier(X,y):
     svm_text_clf = Pipeline([('vect',CountVectorizer()),
         ('tfidf',TfidfTransformer()),
-        ('clf', SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, n_iter=5, random_state=42)),
+        ('clf', SGDClassifier(loss='log', penalty='l2',alpha=1e-4, n_iter=5, random_state=42, n_jobs=-1)),
         ])
     svm_text_clf = svm_text_clf.fit(X,y)
     return svm_text_clf
@@ -63,8 +64,13 @@ if __name__ == "__main__":
         y_list.append(sub)
     X = pd.concat(X_list)
     y = pd.concat(y_list)
+
+    start = time.time()
     text_clf = create_svm_classifier(X,y)
+    print (time.time() - start)
     joblib.dump(text_clf,"svm_classifier.pkl")
-    scores = cross_validation.cross_val_score(text_clf,X,y,cv = 5)
-    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    print (time.time() - start)
+    #scores = cross_validation.cross_val_score(text_clf,X,y,cv = 5)
+    #print (time.time() - start)
+    #print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
